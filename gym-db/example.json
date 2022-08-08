@@ -1,0 +1,33 @@
+{
+    "id": "09a45651-6350-4ce6-b014-4b750bb4063b",
+    "first": "TestNameFirst",
+    "last": "TestNameLast",
+    "email": "test.12389gsr41@gmail.com",
+    "salt": "d5fc72ebe158a825",
+    "password": "d5fc72ebe158a825df680d8cce75eb1c4010a4b02b521ff103aa2cdf18cb4723",
+    "tag": "aaaaa.aaaaaaaa",
+    "bio": "I am a test user that is trying to test this so let me test this alright? test ok thanks.",
+    "location": {
+        "city": "New York",
+        "state": "NY",
+        "country": "USA"
+    },
+    "profile_picture": "https://www.amazon-123-123-1-23-123/123f-312rjf8432uf834-123ji8dfj2934r923j9r-/23d283fjh823hr812u3812",
+    "settings": {
+        "private": false
+    },
+    "posts": [
+        {
+            "owner": "09a45651-6350-4ce6-b014-4b750bb4063b",
+            "id": "09a45651-6350-4ce6-b014-4b750bb4063b",
+            "url": "https://www.amazon-123-123-1-23-123/123f-312rjf8432uf834-123ji8dfj2934r923j9r-/23d283fjh823hr812u3812",
+            "caption": "First time trying this thing so let me know how it goes alright? k thanks.",
+            "private": true,
+            "iat": "",
+            "likes": []
+        }
+    ],
+    "likes": ["09a45651-6350-4ce6-b014-4b750bb4063b"],
+    "workouts": [],
+    "meals": []
+}

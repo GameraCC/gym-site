@@ -1,0 +1,15 @@
+{
+  "name": "gym-api-v1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "deploy": "npm install && serverless deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "db": "file:../libs/db",
+    "jsonwebtoken": "^8.5.1"
+  }
+}

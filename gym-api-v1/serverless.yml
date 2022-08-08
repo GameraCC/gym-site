@@ -1,0 +1,74 @@
+service: ${file(../serverless.common.yml):service}-api-v1
+frameworkVersion: ${file(../serverless.common.yml):frameworkVersion}
+
+# Dont include the handler if not testing, uncomment if not utilizing test handler
+# package:
+#   patterns:
+#     - '!./handlers/test.js'
+
+provider:
+  name: aws
+  stage: ${file(../serverless.common.yml):provider.stage}
+  region: ${file(../serverless.common.yml):provider.region}
+  runtime: nodejs16.x
+  timeout: 3
+  environment:
+    GYM_TABLE_NAME: !ImportValue ${self:provider.stage}-GymTableName
+    GYM_JWT_ENCRYPTION_KEY: ${ssm:GYM_JWT_ENCRYPTION_KEY}
+    GYM_AES_ENCRYPTION_KEY: ${ssm:GYM_AES_ENCRYPTION_KEY}
+    REGION: ${aws:region}
+    MAX_PASSWORD_LENGTH: 100
+    MIN_PASSWORD_LENGTH: 8
+    MAX_USERNAME_LENGTH: 24
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: !ImportValue ${self:provider.stage}-GymTableArn
+  httpApi:
+    authorizers:
+      gym-authorizer:
+          type: request
+          functionName: authorizer
+          identitySource: $request.header.Authorization
+          resultTtlInSeconds: 3600
+
+  
+
+functions:
+
+  # Test handler, uncomment if utilziing test handler
+  test:
+    handler: ./handlers/test.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /test
+          authorizer:
+            name: gym-authorizer
+
+  authorizer:
+    handler: ./handlers/authorizer.handler
+
+  signup:
+    handler: ./handlers/signup.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /signup
+  
+  login:
+    handler: ./handlers/login.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /login
+          
+
+

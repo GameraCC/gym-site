@@ -1,0 +1,23 @@
+{
+  "name": "gym-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "prettier": {
+    "tabs": true,
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true,
+    "quoteProps": "preserve",
+    "bracketSpacing": false,
+    "trailingComma": "none"
+  },
+  "devDependencies": {
+    "serverless": "^3.21.0"
+  }
+}

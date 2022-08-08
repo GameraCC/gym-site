@@ -1,0 +1,6 @@
+service: gym-site
+frameworkVersion: 3
+
+provider:
+  stage: dev
+  region: us-east-1
