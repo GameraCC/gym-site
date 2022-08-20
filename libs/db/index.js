@@ -38,8 +38,8 @@ const {GYM_TABLE_NAME} = process.env
  *
  * @param {string} username
  * @param {string} email
- * @param {string} first_name
- * @param {string} last_name
+ * @param {string} firstName
+ * @param {string} lastName
  * @param {Object} location
  * @param {string} location.city - Full city name
  * @param {string} location.state - Short form state, e.g: CA, ON, NY
@@ -54,8 +54,8 @@ const {GYM_TABLE_NAME} = process.env
 const SignUpUser = ({
     username,
     email,
-    first_name,
-    last_name,
+    firstName,
+    lastName,
     location: {city, state, country},
     hash,
     salt,
@@ -83,8 +83,8 @@ const SignUpUser = ({
                         email,
                         hash,
                         salt,
-                        first_name,
-                        last_name,
+                        firstName,
+                        lastName,
                         profile_picture: '',
                         bio: '',
                         location: {
