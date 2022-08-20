@@ -22,8 +22,8 @@ const {
  * @param {string} username - The username attempting signup
  * @param {string} email - The email attempting signup
  * @param {string} password - The password attempting signup
- * @param {string} firstName - The first name attempting signup
- * @param {string} lastName - The last name attempting signup
+ * @param {string} first_name - The first name attempting signup
+ * @param {string} last_name - The last name attempting signup
  * @param {string} city - City name attempting signup
  * @param {string} state - State code attempting signup
  * @param {string} country - ISO3 country code attempting signup
@@ -42,8 +42,8 @@ exports.handler = async (event) => {
                 username,
                 email,
                 password,
-                firstName,
-                lastName,
+                first_name,
+                last_name,
                 city,
                 state,
                 country
@@ -54,8 +54,8 @@ exports.handler = async (event) => {
                 !username ||
                 !email ||
                 !password ||
-                !firstName ||
-                !lastName ||
+                !first_name ||
+                !last_name ||
                 !city ||
                 !state ||
                 !country
@@ -77,7 +77,7 @@ exports.handler = async (event) => {
             if (city.length > 32 || state.length > 32 || country.length > 64)
                 return badRequestMessage('Invalid location length')
 
-            if (firstName.length >= 32 || lastName.length >= 32)
+            if (first_name.length >= 32 || last_name.length >= 32)
                 return badRequestMessage('Invalid first or last name length')
         } catch (err) {
             console.error('Error parsing input parameters, error:', err)
