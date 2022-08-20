@@ -20,7 +20,7 @@ const {GYM_TABLE_NAME} = process.env
  * DEFAULT TABLE
  * PK (HASH)                | SK (RANGE)             | Description
  * USER#{USERNAME}          | #METADATA              | Used to fetch user metadata via username
- * USER#{EMAIL}             | #USER#${USERNAME}         | Used to query all users with an ACID transaction for an existing email, added to table with a signup every time a user is created
+ * USER#{EMAIL}             | #USER#${USERNAME}      | Used to query all users with an ACID transaction for an existing email, added to table with a signup every time a user is created
  * USER#{USERNAME}          | POST#{TIMESTAMP}       | Used to query posts
  * USER#{USERNAME}          | WORKOUT#{TIMESTAMP}    | Used to query workouts
  * USER#{USERNAME}          | MEAL#{TIMESTAMP}       | Used to query meals
@@ -41,7 +41,7 @@ const {GYM_TABLE_NAME} = process.env
  * @param {string} first_name
  * @param {string} last_name
  * @param {Object} location
- * @param {string} location.city
+ * @param {string} location.city - Full city name
  * @param {string} location.state - Short form state, e.g: CA, ON, NY
  * @param {string} location.country - Short form country, e.g: USA, CA, FR
  * @param {string} hash
@@ -64,7 +64,7 @@ const SignUpUser = ({
 }) =>
     new Promise(async (res, rej) => {
         try {
-            const writeEmail = {
+            const writeEmailIfNonExistant = {
                 TableName: GYM_TABLE_NAME,
                 ConditionExpression: 'attribute_not_exists(PK)',
                 Item: {
@@ -99,7 +99,7 @@ const SignUpUser = ({
 
             const transaction = new TransactWriteCommand({
                 TransactItems: [
-                    {Put: writeEmail},
+                    {Put: writeEmailIfNonExistant},
                     {Put: createUserIfNonExistant}
                 ]
             })

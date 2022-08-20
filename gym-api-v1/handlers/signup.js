@@ -19,6 +19,15 @@ const {
 /**
  * Signs up a user, verifying a user with the same email or username does not already exist
  *
+ * @param {string} username - The username attempting signup
+ * @param {string} email - The email attempting signup
+ * @param {string} password - The password attempting signup
+ * @param {string} firstName - The first name attempting signup
+ * @param {string} lastName - The last name attempting signup
+ * @param {string} city - City name attempting signup
+ * @param {string} state - State code attempting signup
+ * @param {string} country - ISO3 country code attempting signup
+ *
  * @returns {{session: string}} The signed in session token
  */
 exports.handler = async (event) => {
@@ -33,8 +42,8 @@ exports.handler = async (event) => {
                 username,
                 email,
                 password,
-                first_name,
-                last_name,
+                firstName,
+                lastName,
                 city,
                 state,
                 country
@@ -45,12 +54,12 @@ exports.handler = async (event) => {
                 !username ||
                 !email ||
                 !password ||
-                !first_name ||
-                !last_name ||
+                !firstName ||
+                !lastName ||
                 !city ||
                 !state ||
                 !country
-            ) throw new Error('Falsy input parameters')
+            ) return badRequestMessage('Falsy input parameters')
 
             if (username.length > MAX_USERNAME_LENGTH)
                 return badRequestMessage('Invalid username length')
@@ -82,8 +91,8 @@ exports.handler = async (event) => {
             await SignUpUser({
                 username,
                 email,
-                first_name,
-                last_name,
+                firstName,
+                lastName,
                 location: {
                     city,
                     state,

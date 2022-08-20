@@ -1,16 +1,13 @@
 const INTERNAL_SERVER_ERROR = {
-    statusCode: 500,
-    body: JSON.stringify({message: 'Internal Server Error'})
+    statusCode: 500
 }
 
 const BAD_REQUEST = {
-    statusCode: 400,
-    body: JSON.stringify({message: 'Bad Request'})
+    statusCode: 400
 }
 
 const UNAUTHORIZED = {
-    statusCode: 401,
-    body: JSON.stringify({message: 'Unauthorized'})
+    statusCode: 401
 }
 
 const badRequestMessage = (message) => ({

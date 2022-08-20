@@ -18,6 +18,9 @@ const {encrypt} = require('../lib/crypto')
 /**
  * Logs a user in, returning a session token to validate through authorizer-enabled functions
  *
+ * @param {string} username - The username to attempting login
+ * @param {string} password - The password to attempting login
+ *
  * @returns {{session: string}} The signed in session token
  */
 exports.handler = async (event) => {
