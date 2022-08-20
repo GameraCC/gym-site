@@ -11,5 +11,3 @@ This serverless function tails the logs of a given function for updates, continu
 > `serverless deploy -f functionName`
 
 This serverless function deploys only a specific function rather than the entire Cloudformation stack speeding up CI/CD 10 fold
-
-a
