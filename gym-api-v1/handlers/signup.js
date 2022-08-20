@@ -77,7 +77,7 @@ exports.handler = async (event) => {
             if (city.length > 32 || state.length > 32 || country.length > 64)
                 return badRequestMessage('Invalid location length')
 
-            if (first_name.length >= 32 || last_name.length >= 32)
+            if (firstName.length >= 32 || lastName.length >= 32)
                 return badRequestMessage('Invalid first or last name length')
         } catch (err) {
             console.error('Error parsing input parameters, error:', err)
