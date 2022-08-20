@@ -91,8 +91,8 @@ exports.handler = async (event) => {
             await SignUpUser({
                 username,
                 email,
-                firstName,
-                lastName,
+                first_name,
+                last_name,
                 location: {
                     city,
                     state,
