@@ -24,7 +24,7 @@ const {usernameConstraint, passwordConstraint} = require('../lib/constraints')
  *
  * @returns {{session: string}} The signed in session token
  */
-exports.handler = async (event) => {
+exports.handler = async event => {
     try {
         try {
             // Decode base64 encoded event body if content-type is not application/json
@@ -90,7 +90,17 @@ exports.handler = async (event) => {
         // Return session token to client
         return {
             statusCode: 200,
-            body: JSON.stringify({session: encrypted})
+            body: JSON.stringify({
+                session: encrypted,
+                user: {
+                    email: metadata.user.email,
+                    first_name: metadata.user.first_name,
+                    last_name: metadata.user.last_name,
+                    profile_picture: metadata.user.profile_picture,
+                    bio: metadata.user.bio,
+                    location: metadata.user.location
+                }
+            })
         }
     } catch (err) {
         // Log error to cloudwatch
