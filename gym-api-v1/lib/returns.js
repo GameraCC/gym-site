@@ -17,7 +17,7 @@ const badRequestMessage = (message) => ({
 
 const internalServerErrorMessage = (message) => ({
     statusCode: 500,
-    message: JSON.stringify({message})
+    body: JSON.stringify({message})
 })
 
 module.exports = {

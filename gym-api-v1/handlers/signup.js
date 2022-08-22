@@ -2,19 +2,22 @@ const {SignUpUser} = require('db')
 const {
     INTERNAL_SERVER_ERROR,
     BAD_REQUEST,
-    badRequestMessage
+    badRequestMessage,
+    internalServerErrorMessage
 } = require('../lib/returns')
 const {generateSaltedHash} = require('../lib/password')
 const {generateIat} = require('../lib/tools')
 const {signJWT} = require('../lib/password')
 const {encrypt} = require('../lib/crypto')
+const {GYM_JWT_ENCRYPTION_KEY, GYM_AES_ENCRYPTION_KEY} = process.env
 const {
-    GYM_JWT_ENCRYPTION_KEY,
-    GYM_AES_ENCRYPTION_KEY,
-    MAX_USERNAME_LENGTH,
-    MAX_PASSWORD_LENGTH,
-    MIN_PASSWORD_LENGTH
-} = process.env
+    passwordConstraint,
+    emailConstraint,
+    usernameConstraint,
+    locationConstraint,
+    firstNameConstraint,
+    lastNameConstraint
+} = require('../lib/constraints')
 
 /**
  * Signs up a user, verifying a user with the same email or username does not already exist
@@ -56,29 +59,36 @@ exports.handler = async (event) => {
                 !password ||
                 !first_name ||
                 !last_name ||
-                !city ||
-                !state ||
-                !country
+                !country // Don't valid state or city length as some countries have no states or cities
             ) return badRequestMessage('Falsy input parameters')
 
-            if (username.length > MAX_USERNAME_LENGTH)
-                return badRequestMessage('Invalid username length')
+            const usernameConstraintCheck = usernameConstraint(username)
+            if (usernameConstraintCheck !== true)
+                return badRequestMessage(usernameConstraintCheck)
 
-            if (email.length > 320)
-                return badRequestMessage('Invalid email length')
+            const emailConstraintCheck = emailConstraint(email)
+            if (emailConstraintCheck !== true)
+                return badRequestMessage(emailConstraintCheck)
 
-            if (
-                password.length > MAX_PASSWORD_LENGTH ||
-                password.length < MIN_PASSWORD_LENGTH
-            ) {
-                return badRequestMessage('Invalid password length')
-            }
+            const passwordConstraintCheck = passwordConstraint(password)
+            if (passwordConstraintCheck !== true)
+                return badRequestMessage(passwordConstraintCheck)
 
-            if (city.length > 32 || state.length > 32 || country.length > 64)
-                return badRequestMessage('Invalid location length')
+            const locationConstraintCheck = locationConstraint({
+                city,
+                state,
+                country
+            })
+            if (locationConstraintCheck !== true)
+                return badRequestMessage(locationConstraintCheck)
 
-            if (first_name.length >= 32 || last_name.length >= 32)
-                return badRequestMessage('Invalid first or last name length')
+            const firstNameConstraintCheck = firstNameConstraint(first_name)
+            if (firstNameConstraintCheck !== true)
+                return badRequestMessage(firstNameConstraintCheck)
+
+            const lastNameConstraintCheck = lastNameConstraint(last_name)
+            if (lastNameConstraintCheck !== true)
+                return badRequestMessage(lastNameConstraintCheck)
         } catch (err) {
             console.error('Error parsing input parameters, error:', err)
             return BAD_REQUEST

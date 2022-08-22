@@ -15,7 +15,8 @@
     "singleQuote": true,
     "quoteProps": "preserve",
     "bracketSpacing": false,
-    "trailingComma": "none"
+    "trailingComma": "none",
+    "arrowParens": "avoid"
   },
   "devDependencies": {
     "serverless": "^3.21.0"

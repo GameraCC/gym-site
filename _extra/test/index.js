@@ -2,11 +2,6 @@ const {handler: signup} = require('../../gym-api-v1/handlers/signup')
 const {sign} = require('jsonwebtoken')
 const request = require('request')
 
-/**
- * endpoints:                                                                                                        
-  POST - https://eoqmywmvv0.execute-api.us-east-1.amazonaws.com/signup
- */
-
 const signUpLocal = () => {
     signup()
 }
@@ -14,14 +9,14 @@ const signUpLocal = () => {
 // prettier-ignore
 const signUpLive = () => {
     const data = {
-        username: 'TestUsername',
-        email: 'test@gmail.com',
-        password: 'TestPassword123',
+        username: 'ataest.username',
+        email: 'testaa@gmail.com',
+        password: 'TestPassword23',
         first_name: 'TestFirst',
         last_name: 'TestLast',
-        city: 'Palo Alto',
-        state: 'CA',
-        country: 'USA'
+        city: '',
+        state: '',
+        country: 'REU'
     }
 
     request({
@@ -103,7 +98,7 @@ const loginLive = () => {
 
 // prettier-ignore
 const main = (_) => {
-    loginLive()
+    signUpLive()
 }
 
 main()

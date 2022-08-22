@@ -14,6 +14,7 @@ const {
 } = process.env
 const {checkHash, signJWT} = require('../lib/password')
 const {encrypt} = require('../lib/crypto')
+const {usernameConstraint, passwordConstraint} = require('../lib/constraints')
 
 /**
  * Logs a user in, returning a session token to validate through authorizer-enabled functions
@@ -35,15 +36,13 @@ exports.handler = async (event) => {
             if (!username || !password)
                 return badRequestMessage('Falsy input parameters')
 
-            if (username.length > MAX_USERNAME_LENGTH)
-                return badRequestMessage('Invalid username length')
+            const usernameConstraintCheck = usernameConstraint(username)
+            if (usernameConstraintCheck !== true)
+                return badRequestMessage(usernameConstraintCheck)
 
-            if (
-                password.length > MAX_PASSWORD_LENGTH ||
-                password.length < MIN_PASSWORD_LENGTH
-            ) {
-                return badRequestMessage('Invalid password length')
-            }
+            const passwordConstraintCheck = passwordConstraint(password)
+            if (passwordConstraintCheck !== true)
+                return badRequestMessage(passwordConstraintCheck)
         } catch (err) {
             console.error('Error parsing input parameters, error:', err)
             return BAD_REQUEST

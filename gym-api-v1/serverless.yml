@@ -17,9 +17,6 @@ provider:
     GYM_JWT_ENCRYPTION_KEY: ${ssm:GYM_JWT_ENCRYPTION_KEY}
     GYM_AES_ENCRYPTION_KEY: ${ssm:GYM_AES_ENCRYPTION_KEY}
     REGION: ${aws:region}
-    MAX_PASSWORD_LENGTH: 100
-    MIN_PASSWORD_LENGTH: 8
-    MAX_USERNAME_LENGTH: 24
   iam:
     role:
       statements:
