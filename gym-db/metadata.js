@@ -4,6 +4,8 @@
 
 const metadata = {
     user: {
+        PK: 'USER#test.username',
+        SK: '#METADATA',
         email: 'test@gmail.com',
         hash: '86dfa4ddeea18cb741aa1e74315323f2f9feb1a45ef9c36454f3250411667535',
         salt: '1a2b3c4d',

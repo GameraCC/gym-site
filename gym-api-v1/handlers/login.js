@@ -74,8 +74,9 @@ exports.handler = async event => {
 
         // Store username & email in client session token to authenticate identity of requests & query database
         // Use returned PK as username for better security, in case of a login exploit in which the user can authenticate to be the provided usernae
+        const validatedUsername = metadata.PK.slice(5)
         const session = JSON.stringify({
-            username: metadata.PK.slice(5), // USER#{USERNAME}
+            username: validatedUsername, // USER#{USERNAME}
             email: metadata.user.email
         })
 
@@ -94,7 +95,7 @@ exports.handler = async event => {
                 session: encrypted,
                 user: {
                     email: metadata.user.email,
-                    username: metadata.user.username,
+                    username: validatedUsername,
                     first_name: metadata.user.first_name,
                     last_name: metadata.user.last_name,
                     profile_picture: metadata.user.profile_picture,
