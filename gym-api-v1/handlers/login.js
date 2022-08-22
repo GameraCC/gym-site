@@ -94,6 +94,7 @@ exports.handler = async event => {
                 session: encrypted,
                 user: {
                     email: metadata.user.email,
+                    username: metadata.user.username,
                     first_name: metadata.user.first_name,
                     last_name: metadata.user.last_name,
                     profile_picture: metadata.user.profile_picture,
