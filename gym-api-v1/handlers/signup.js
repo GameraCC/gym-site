@@ -33,7 +33,7 @@ const {
  *
  * @returns {{session: string}} The signed in session token
  */
-exports.handler = async (event) => {
+exports.handler = async event => {
     try {
         // Parse request input parameters
         try {
@@ -93,6 +93,10 @@ exports.handler = async (event) => {
             console.error('Error parsing input parameters, error:', err)
             return BAD_REQUEST
         }
+
+        // Capitalize first and last name first characters once constraint validation is passed
+        first_name = first_name[0].toUpperCase() + first_name.slice(1)
+        last_name = last_name[0].toUpperCase() + last_name.slice(1)
 
         // Generate salted hash and random salt to be stored in database for logins
         const [hash, salt] = generateSaltedHash(password)

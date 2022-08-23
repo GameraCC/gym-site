@@ -19,7 +19,7 @@ const USERNAME_VALIDATION_REGEX =
  */
 
 // Minimum 8 characters, maximum 100 characters, must contain an uppercase letter and a number
-const passwordConstraint = (password) => {
+const passwordConstraint = password => {
     // Check length constraints
     if (
         password.length < MIN_PASSWORD_LENGTH ||
@@ -35,7 +35,7 @@ const passwordConstraint = (password) => {
 }
 
 // Validate email input utilizing regex & ensure email is in al lower case, to prevent users registering with the same email
-const emailConstraint = (email) => {
+const emailConstraint = email => {
     if (!EMAIL_VALIDATION_REGEX.test(email)) return 'Invalid email address'
     if (email.length > 320) return 'Email too long'
     if (email !== email.toLowerCase())
@@ -45,7 +45,7 @@ const emailConstraint = (email) => {
 }
 
 // Usernames must be alphanumeric, no capital letters, trailing or leading dots, or consecutive dots
-const usernameConstraint = (username) => {
+const usernameConstraint = username => {
     if (
         username.length < MIN_USERNAME_LENGTH ||
         username.length > MAX_USERNAME_LENGTH
@@ -79,16 +79,24 @@ const locationConstraint = ({city, state, country}) => {
     return true
 }
 
-// First name must be less than 32 characters
-const firstNameConstraint = (first_name) => {
+// First name must be less than 32 characters & only contain letters of the alphabet
+const firstNameConstraint = first_name => {
+    // Check whether or not name contains any letter which is not part of the alphabet
+    if (/[^a-zA-Z]/.test(first_name))
+        return 'First names can only include letters'
+
     if (first_name.length > 32)
         return 'First name must be less than 32 characters'
 
     return true
 }
 
-// First name must be less than 32 characters
-const lastNameConstraint = (last_name) => {
+// First name must be less than 32 characters & only contain letters of the alphabet
+const lastNameConstraint = last_name => {
+    // Check whether or not name contains any letter which is not part of the alphabet
+    if (/[^a-zA-Z]/.test(last_name))
+        return 'Last names can only include letters'
+
     if (last_name.length > 32)
         return 'Last name must be less than 32 characters'
 
