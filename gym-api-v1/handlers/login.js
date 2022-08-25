@@ -5,13 +5,7 @@ const {
     UNAUTHORIZED,
     badRequestMessage
 } = require('../lib/returns')
-const {
-    GYM_JWT_ENCRYPTION_KEY,
-    GYM_AES_ENCRYPTION_KEY,
-    MAX_USERNAME_LENGTH,
-    MAX_PASSWORD_LENGTH,
-    MIN_PASSWORD_LENGTH
-} = process.env
+const {GYM_JWT_ENCRYPTION_KEY, GYM_AES_ENCRYPTION_KEY} = process.env
 const {checkHash, signJWT} = require('../lib/password')
 const {encrypt} = require('../lib/crypto')
 const {usernameConstraint, passwordConstraint} = require('../lib/constraints')
@@ -33,7 +27,13 @@ exports.handler = async event => {
 
             var {username, password} = JSON.parse(event.body)
 
-            if (!username || !password)
+            // Type check and ensure required properties are present
+            if (
+                typeof username !== 'string' ||
+                typeof password !== 'string' ||
+                !username ||
+                !password
+            )
                 return badRequestMessage('Falsy input parameters')
 
             const usernameConstraintCheck = usernameConstraint(username)

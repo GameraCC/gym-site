@@ -2,9 +2,9 @@ service: ${file(../serverless.common.yml):service}-api-v1
 frameworkVersion: ${file(../serverless.common.yml):frameworkVersion}
 
 # Dont include the handler if not testing, uncomment if not utilizing test handler
-# package:
-#   patterns:
-#     - '!./handlers/test.js'
+package:
+  patterns:
+    - '!./handlers/test.js'
 
 provider:
   name: aws
@@ -27,6 +27,7 @@ provider:
             - dynamodb:GetItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
+            - dynamodb:BatchWriteItem
           Resource: !ImportValue ${self:provider.stage}-GymTableArn
   httpApi:
     authorizers:
@@ -41,14 +42,14 @@ provider:
 functions:
 
   # Test handler, uncomment if utilziing test handler
-  test:
-    handler: ./handlers/test.handler
-    events:
-      - httpApi:
-          method: POST
-          path: /test
-          authorizer:
-            name: gym-authorizer
+  # test:
+  #   handler: ./handlers/test.handler
+  #   events:
+  #     - httpApi:
+  #         method: POST
+  #         path: /test
+  #         authorizer:
+  #           name: gym-authorizer
 
   authorizer:
     handler: ./handlers/authorizer.handler
@@ -67,5 +68,42 @@ functions:
           method: POST
           path: /login
           
+  createWorkout:
+    handler: './handlers/create_workout.handler'
+    events:
+      - httpApi:
+          method: POST
+          path: /workouts/create
+          authorizer:
+            name: gym-authorizer
+
+  editWorkout:
+    handler: './handlers/edit_workout.handler'
+    events:
+      - httpApi:
+          method: POST
+          path: /workouts/edit
+          authorizer:
+            name: gym-authorizer
+
+  deleteWorkout:
+    handler: './handlers/delete_workout.handler'
+    events:
+      - httpApi:
+          method: POST
+          path: /workouts/delete
+          authorizer:
+            name: gym-authorizer
+
+  getAllWorkouts:
+    handler: './handlers/get_all_workouts.handler'
+    events:
+      - httpApi:
+          method: GET
+          path: /workouts
+          authorizer:
+            name: gym-authorizer
+
+
 
 

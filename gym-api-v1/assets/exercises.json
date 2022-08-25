@@ -1,0 +1,10 @@
+{
+    "SEATED_BARBELL_OVERHEAD_PRESS": {
+        "name": "Seated Barbell Overhead Press",
+        "categories": {
+            "simple": ["Shoulders", "Upper Back"],
+            "advanced": ["Anterior Deltoids", "Medial Deltoid", "Posterior Deltoid", "Triceps"]
+        },
+        "demonstration": "https://newlife.com.cy/wp-content/uploads/2019/12/00911301-Barbell-Seated-Overhead-Press_Shoulders_360.gif"
+    }
+}

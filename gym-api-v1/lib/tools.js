@@ -1,3 +1,3 @@
-const generateIat = () => Math.round(Date.now() / 1000)
+const generateIat = () => Date.now()
 
 module.exports = {generateIat}

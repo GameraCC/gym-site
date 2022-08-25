@@ -20,7 +20,7 @@ const {GYM_AES_ENCRYPTION_KEY, GYM_JWT_ENCRYPTION_KEY, REGION} = process.env
  * - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-lambda-authorizer.html
  * - https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html
  */
-exports.handler = async (event) => {
+exports.handler = async event => {
     try {
         // prettier-ignore
         // Decrypt the encrypted authorization token
@@ -44,6 +44,8 @@ exports.handler = async (event) => {
                 `arn:aws:execute-api:${REGION}:${event.requestContext.accountId}:${event.requestContext.apiId}/${event.requestContext.stage}/*`
             ),
             context: {
+                // username
+                // email
                 ...data
             }
         }

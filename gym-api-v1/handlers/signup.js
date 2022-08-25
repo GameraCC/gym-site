@@ -52,8 +52,17 @@ exports.handler = async event => {
                 country
             } = JSON.parse(event.body)
 
+            // Type check and ensure required properties are present
             // prettier-ignore
             if (
+                typeof username !== 'string' ||
+                typeof email !== 'string' ||
+                typeof password !== 'string' ||
+                typeof first_name !== 'string' ||
+                typeof last_name !== 'string' ||
+                typeof country !== 'string' ||
+                typeof state !== 'string' ||
+                typeof city !== 'string' ||
                 !username ||
                 !email ||
                 !password ||
