@@ -1,4 +1,4 @@
-const {GetUserMetadata} = require('db')
+const {GetUserData} = require('db')
 const {
     BAD_REQUEST,
     INTERNAL_SERVER_ERROR,
@@ -59,8 +59,15 @@ exports.handler = async event => {
          */
 
         try {
-            var metadata = await GetUserMetadata({username})
+            const response = await GetUserData({username})
+
+            // Extract metadata & workouts from response
+            var metadata = response[0] // Metadata will always be first in response because results are sorted lexicographically descending
+            var workouts = response.filter(({SK}) =>
+                SK.startsWith(`WORKOUT#${username}`)
+            )
         } catch (err) {
+            console.error(err)
             // Username does not exist
             return UNAUTHORIZED
         }
@@ -88,6 +95,16 @@ exports.handler = async event => {
         const encrypted = encrypt(jwt, GYM_AES_ENCRYPTION_KEY)
         if (!encrypted) return INTERNAL_SERVER_ERROR
 
+        // Strip PK, SK, append and return workout name with other workout attributes
+        workouts = workouts.map(
+            ({SK, workout: {description, exercises, iat}}) => ({
+                name: /^(?:.*?#){2}(?<name>.*)/.exec(SK).groups.name, // Extract name from sort key
+                description,
+                exercises,
+                iat
+            })
+        )
+
         // Return session token to client
         return {
             statusCode: 200,
@@ -101,7 +118,8 @@ exports.handler = async event => {
                     profile_picture: metadata.user.profile_picture,
                     bio: metadata.user.bio,
                     location: metadata.user.location
-                }
+                },
+                workouts
             })
         }
     } catch (err) {

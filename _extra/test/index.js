@@ -278,7 +278,6 @@ const getAllUserWorkoutsLive = () => {
 // prettier-ignore
 const main = async (_) => {
     await loginLive()
-    await getAllUserWorkoutsLive()
 }
 
 main()

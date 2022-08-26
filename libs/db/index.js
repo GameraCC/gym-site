@@ -3,7 +3,6 @@ const {DynamoDBClient} = require('@aws-sdk/client-dynamodb')
 const {
     DynamoDBDocumentClient,
     TransactWriteCommand,
-    GetCommand,
     PutCommand,
     UpdateCommand,
     BatchWriteCommand,
@@ -124,29 +123,37 @@ const SignUpUser = ({
     })
 
 /**
- * Queries and returns a users metadata
+ * Queries and returns a users metadata & workouts
  *
  * @param {Object} args
  * @param {string} args.username
  *
  * @returns
  */
-const GetUserMetadata = ({username}) =>
+const GetUserData = ({username}) =>
     new Promise(async (res, rej) => {
         try {
-            const getUserMetadata = new GetCommand({
+            const getUserMetadata = new QueryCommand({
                 TableName: GYM_TABLE_NAME,
-                Key: {
-                    PK: `USER#${username}`,
-                    SK: '#METADATA'
+                ExpressionAttributeNames: {
+                    '#PK': 'PK',
+                    '#SK': 'SK'
                 },
-                ConsistentRead: false // Non-consistent logins don't pose a significant security threat, unlike signups
+                ExpressionAttributeValues: {
+                    ':PK': `USER#${username}`,
+                    ':metadata': '#METADATA',
+                    ':workouts': `WORKOUT#${username}$`
+                },
+                KeyConditionExpression:
+                    '#PK = :PK and #SK between :metadata and :workouts',
+                ConsistentRead: false, // Non-consistent logins don't pose a significant security threat, unlike signups
+                ReturnConsumedCapacity: 'TOTAL'
             })
 
             const response = await client.send(getUserMetadata)
-            if (!response.Item) return rej() // If the polled item is undefined, no items were found
+            if (!response.Items) return rej() // If the polled item is undefined, no items were found
 
-            return res(response.Item)
+            return res(response.Items)
         } catch (err) {
             // Log error to cloudwatch
             console.error(
@@ -372,17 +379,15 @@ const GetUserWorkouts = ({username}) =>
         try {
             const getUserWorkouts = new QueryCommand({
                 TableName: GYM_TABLE_NAME,
-                ConsistentRead: false,
                 ExpressionAttributeNames: {
                     '#PK': 'PK',
                     '#SK': 'SK'
                 },
                 ExpressionAttributeValues: {
-                    ':PK': `USER#${username}`,
-                    ':SK': 'WORKOUT#'
+                    ':PK': `USER#${username}`
                 },
-                KeyConditionExpression: '#PK = :PK AND begins_with(#SK, :SK)',
-                ReturnConsumedCapacity: 'TOTAL'
+                KeyConditionExpression: '#PK = :PK and begins_with(#SK, :SK)',
+                ConsistentRead: false
             })
 
             const response = await client.send(getUserWorkouts)
@@ -401,7 +406,7 @@ const GetUserWorkouts = ({username}) =>
 
 module.exports = {
     SignUpUser,
-    GetUserMetadata,
+    GetUserData,
     CreateUserWorkout,
     EditUserWorkout,
     DeleteUserWorkout,
