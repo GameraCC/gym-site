@@ -151,7 +151,7 @@ const GetUserData = ({username}) =>
             })
 
             const response = await client.send(getUserMetadata)
-            if (!response.Items) return rej() // If the polled item is undefined, no items were found
+            if (!response.Items.length) return rej() // If there are no polled items, the user does not exist
 
             return res(response.Items)
         } catch (err) {

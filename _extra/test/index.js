@@ -70,7 +70,7 @@ const loginLive = () =>
     new Promise((resolve, reject) => {
         try {
             const data = {
-                username: 'testing.user',
+                username: 'testing.usera',
                 password: 'TestPassword123'
             }
 

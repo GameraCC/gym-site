@@ -67,7 +67,6 @@ exports.handler = async event => {
                 SK.startsWith(`WORKOUT#${username}`)
             )
         } catch (err) {
-            console.error(err)
             // Username does not exist
             return UNAUTHORIZED
         }
