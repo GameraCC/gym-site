@@ -1,5 +1,7 @@
 # gym-site
 
+Work-In-Progress Gym site
+
 ## CI / CD Tips
 
 Utilize the following serverless methods to debug and deploy functions
